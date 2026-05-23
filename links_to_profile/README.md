@@ -9,6 +9,27 @@ pages, friendship neighbors, and a self-declared topic histogram.
 See [`plans/2026-05-23-link-to-profile-pipeline.md`](plans/2026-05-23-link-to-profile-pipeline.md)
 for the full design. This README is the operator's guide.
 
+## What's already in the repo (no pipeline run needed)
+
+If you just want to *look at* the outputs, everything's checked in:
+
+| What | Path | Format |
+|---|---|---|
+| **Profile per cohort user** (Harrison, Eva, Danoli2) | [`profiles/harrison-qian2.md`](profiles/harrison-qian2.md) · [`profiles/eva-l5.md`](profiles/eva-l5.md) · [`profiles/danoli2.md`](profiles/danoli2.md) | human-readable markdown |
+| Same profiles as JSON (for code) | `profiles/{username}.json` | one JSON object per file |
+| **PCA axis names + pole descriptions** | [`axes/named_axes.json`](axes/named_axes.json) | 10 axes, each with name + positive_pole + negative_pole + confidence |
+| Fitted PCA model | `axes/pca_model.npz` + `axes/pca_meta.json` | numpy archive of mean+components+variance; load via `pca.load_pca()` |
+| Per-page PCA projections | `axes/page_coords.parquet` | `page_id × pc1..pc10` |
+| Scree plot | `axes/scree.png` | cumulative explained variance |
+| Personality JSONs (structured + blurb) | `data/personality/{username}.json` | one file per cohort user |
+| Personal-site markdown | `data/personal_sites/{username}.md` | fetched via Jina Reader |
+| Cohort bookmarks + friendships | `data/cohort.jsonl` | one JSON line per user |
+| All Curius users (id, curius_id, names, websites) | `data/users.jsonl` | 6,156 lines |
+| Page → bookmarker user_ids | `data/page_bookmarkers.jsonl` | 181,326 lines |
+| Frozen prior runs | [`snapshots/`](snapshots/) | dated subdirs, each with full INTERPRETATION.md |
+
+Quick read for a teammate: start at [`profiles/harrison-qian2.md`](profiles/harrison-qian2.md), then [`axes/named_axes.json`](axes/named_axes.json), then [`snapshots/2026-05-23-1349/INTERPRETATION.md`](snapshots/2026-05-23-1349/INTERPRETATION.md) for context on what the axes mean.
+
 ## Quickstart
 
 ```bash
