@@ -55,8 +55,7 @@ async def fetch(route: Route, client: httpx.AsyncClient) -> ExtractResult:
         owner, repo = route.github_repo
         api_url = f"https://api.github.com/repos/{owner}/{repo}/readme"
         try:
-            r = await client.get(api_url, headers=_headers(), follow_redirects=True,
-                                 params={"ref": ""})
+            r = await client.get(api_url, headers=_headers(), follow_redirects=True)
         except httpx.TimeoutException:
             return ExtractResult(None, "timeout")
         if r.status_code >= 400:

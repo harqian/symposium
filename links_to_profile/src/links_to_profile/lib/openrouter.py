@@ -1,7 +1,7 @@
 """OpenRouter embedding client. OpenAI-compatible /v1/embeddings.
 
 Secret cache:
-    op read "op://Personal/openrouter/api_key" > /tmp/.symposium_openrouter_key
+    op read "op://Private/OpenRouter/credential" > /tmp/.symposium_openrouter_key
 """
 
 from __future__ import annotations
