@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# links_to_profile pipeline — raw data + derived artifacts
+links_to_profile/curius_export_*.json
+links_to_profile/data/pages/
+links_to_profile/data/personal_sites/
+links_to_profile/embeddings/
+links_to_profile/axes/pca_model.pkl
+links_to_profile/.venv/
+links_to_profile/__pycache__/
+links_to_profile/**/__pycache__/
+links_to_profile/uv.lock
