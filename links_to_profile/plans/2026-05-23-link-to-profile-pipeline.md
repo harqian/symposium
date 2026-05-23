@@ -276,9 +276,10 @@ Writes `data/personality/{username}.json`.
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] `data/personal_sites/{harrison-qian2,eva-l5,danoli2}.md` all exist and are >500 bytes each
-- [ ] `data/personality/{harrison-qian2,eva-l5,danoli2}.json` validate against schema (every required key present)
-- [ ] All 3 `blurb` fields are 2-3 sentence non-empty strings
+- [~] `data/personal_sites/{harrison-qian2,eva-l5,danoli2}.md` all exist and are >500 bytes each
+  - harrison-qian2.md=813, eva-l5.md=3308, danoli2.md=458 (under 500). vernatus.com is genuinely a 1-page minimalist site; data reality, not fetcher bug.
+- [x] `data/personality/{harrison-qian2,eva-l5,danoli2}.json` validate against schema (every required key present)
+- [x] All 3 `blurb` fields are 2-3 sentence non-empty strings (Eva's contains an em dash — from Claude, not human-authored)
 
 #### Manual Verification:
 - [ ] Harrison's personality JSON reads accurate when checked against `moonflowers.xyz`
