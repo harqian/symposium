@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "user_id": 5790,
+    "curius_id": 6701,
+    "username": "harrison-qian2",
+    "display_name": "Harrison Qian",
+    "website": "https://moonflowers.xyz",
+    "twitter": "astronomicalflo",
+    "self_declared_topics": []
+  },
+  "axes": [
+    {
+      "pc_index": 1,
+      "name": "personal_essay_vs_ai_tech_product",
+      "positive_pole": "Introspective first-person Substack-style essays on self-acceptance, romance, ambition, and twentysomething life lessons.",
+      "negative_pole": "Corporate/technical pages about AI infrastructure, LLMs, agent frameworks, and ML research products.",
+      "confidence": "high",
+      "user_mean": 0.009702651761472225,
+      "user_stddev": 0.20627714693546295
+    },
+    {
+      "pc_index": 2,
+      "name": "ai_alignment_discourse_vs_web_design_craft",
+      "positive_pole": "Long-form analytical writing about AI alignment, safety, misalignment risks, and the future of advanced AI systems, typically on rationalist/AI-research blogs.",
+      "negative_pole": "Personal portfolios, web-design inspiration galleries, and creative-coding/indie-web showcases focused on visual craft and aesthetics rather than written argument.",
+      "confidence": "high",
+      "user_mean": 0.03176193684339523,
+      "user_stddev": 0.14130569994449615
+    },
+    {
+      "pc_index": 3,
+      "name": "startup_venture_capital_ness",
+      "positive_pole": "Pages about founding startups, venture capital, accelerators, and Silicon Valley career paths for aspiring entrepreneurs.",
+      "negative_pole": "Pages featuring literary poetry or technical machine-learning/interpretability content (neural network internals, transformers, attention).",
+      "confidence": "high",
+      "user_mean": 0.005293143913149834,
+      "user_stddev": 0.1293143779039383
+    },
+    {
+      "pc_index": 4,
+      "name": "cultural_critique_vs_self_improvement",
+      "positive_pole": "Long-form cultural, philosophical, geopolitical, or literary commentary on civilization, ideology, and the human condition (often citing theorists, novels, or historical events).",
+      "negative_pole": "Practical first-person advice posts on personal productivity, learning, research methodology, and how to do great work as an individual.",
+      "confidence": "high",
+      "user_mean": -0.05984293296933174,
+      "user_stddev": 0.11087431758642197
+    },
+    {
+      "pc_index": 5,
+      "name": "quantitative_business_analysis_vs_ai_creativity_reflection",
+      "positive_pole": "Pages presenting quantitative, formula-driven analyses of business, finance, startups, or computer-science algorithms with concrete metrics, math, and how-to mechanics.",
+      "negative_pole": "Personal landing pages and reflective essays by AI/HCI researchers and artists musing on creativity, human-AI interaction, and the philosophy of AI tools.",
+      "confidence": "high",
+      "user_mean": -0.01602466218173504,
+      "user_stddev": 0.1075955480337143
+    },
+    {
+      "pc_index": 6,
+      "name": "intellectual_self_improvement_vs_relational_emotional",
+      "positive_pole": "Long-form essays and book recommendations on how to think, learn, do research, and solve hard problems—aimed at cultivating the reader's intellectual craft.",
+      "negative_pole": "Personal/cultural writing about relationships, dating, loneliness, and AI companions, or product pages about AI tools—focused on emotional life and contemporary tech culture rather than intellectual self-cultivation.",
+      "confidence": "high",
+      "user_mean": 0.004623857326805592,
+      "user_stddev": 0.12053942680358887
+    },
+    {
+      "pc_index": 7,
+      "name": "personal_bio_vs_tech_essay",
+      "positive_pole": "Personal homepage/about-me pages or biographical profiles of individuals (typically young AI/tech researchers and founders) listing their education, jobs, and interests.",
+      "negative_pole": "Topical long-form essays and opinion pieces about software, web design, interfaces, or internet culture, written as arguments rather than self-introductions.",
+      "confidence": "high",
+      "user_mean": 0.02818223088979721,
+      "user_stddev": 0.11551069468259811
+    },
+    {
+      "pc_index": 8,
+      "name": "relationships_and_social_connection_focus",
+      "positive_pole": "The page is an essay or guide centered on interpersonal connection—how to meet, befriend, converse with, or build community/trust with other people.",
+      "negative_pole": "The page is a personal essay about work, productivity, time, or life trajectory, with the individual's relationship to their own work/time as the central topic rather than relationships with others.",
+      "confidence": "high",
+      "user_mean": 0.003852195804938674,
+      "user_stddev": 0.11046537756919861
+    },
+    {
+      "pc_index": 9,
+      "name": "commentary_vs_frontier_tech",
+      "positive_pole": "Personal blog-style commentary, criticism, and meta-discussion about the internet, AI discourse, and online culture (often opinionated essays reacting to other writing).",
+      "negative_pole": "Institutional or company-style announcements describing ambitious frontier science/engineering projects (biotech, energy, hardware, neuroscience, moonshots) and their technical missions.",
+      "confidence": "high",
+      "user_mean": 0.004442710429430008,
+      "user_stddev": 0.08670542389154434
+    },
+    {
+      "pc_index": 10,
+      "name": "design_taste_and_craft_discourse",
+      "positive_pole": "Essays and studio/product pages centered on aesthetic taste, craft, and the artistry of design (visual, product, or brand-making) as the core subject.",
+      "negative_pole": "Utilitarian posts about personal-productivity systems, note-taking, second-brain tools, knowledge management, and lists of tools/tips for organizing information.",
+      "confidence": "high",
+      "user_mean": -0.03306199610233307,
+      "user_stddev": 0.08182546496391296
+    }
+  ],
+  "personality": {
+    "structured": {
+      "openness_to_strangers": "high",
+      "curiosity_breadth": "wide",
+      "social_disposition": "warm, curious, eager to connect",
+      "key_interests": [
+        "neurotech",
+        "programming",
+        "math",
+        "piano",
+        "music",
+        "ultimate frisbee"
+      ],
+      "communication_style": "casual, enthusiastic, lowercase and inviting"
+    },
+    "blurb": "Harrison comes across as approachable and energetic, explicitly inviting visitors to reach out and promising to respond to everyone. He's driven by intense curiosity across many domains—math, music, sports, and neurotech—and likely enjoys swapping ideas with anyone who shares that learning bug."
+  },
+  "top_pages": [
+    {
+      "page_id": 180273,
+      "url": "https://substack.com/home/post/p-169608346",
+      "title": "50 things I know - by Cate Hall - Useful Fictions",
+      "highlight_count": 4,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-16T03:16:56.980Z"
+    },
+    {
+      "page_id": 180258,
+      "url": "https://musings.suryamidha.com/the-virtues-of-looking-stupid",
+      "title": "the virtues of looking stupid - musings",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-16T00:05:03.689Z"
+    },
+    {
+      "page_id": 174537,
+      "url": "https://jason.ml/stack",
+      "title": "My Tech Stack",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-03T17:03:00.969Z"
+    },
+    {
+      "page_id": 755,
+      "url": "https://www.cs.virginia.edu/~robins/YouAndYourResearch.html",
+      "title": "You and Your Research",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-24T21:19:30.822Z"
+    },
+    {
+      "page_id": 58877,
+      "url": "https://newsletter.theleading-edge.org/p/10-insights-from-10-years-of-transformational",
+      "title": "10 Insights from 10 Years of Transformational Conversations",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-23T15:39:04.833Z"
+    },
+    {
+      "page_id": 18300,
+      "url": "https://jasmi.news/p/tryhard",
+      "title": "🌻 tryhard - by Jasmine Sun - @jasmine",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-17T22:56:08.449Z"
+    },
+    {
+      "page_id": 17907,
+      "url": "https://benexdict.io/p/math-team",
+      "title": "math team - by benedict - bene dictio",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-17T22:34:18.786Z"
+    },
+    {
+      "page_id": 174383,
+      "url": "https://github.com/Dammyjay93/interface-design",
+      "title": "Dammyjay93/interface-design: Design engineering for Claude Code. Craft, memory, and enforcement for consistent UI. ·",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-09T14:56:36.996Z"
+    },
+    {
+      "page_id": 172335,
+      "url": "https://matheusfacure.github.io/python-causality-handbook/02-Randomised-Experiments.html",
+      "title": "02 - Randomised Experiments — Causal Inference for the Brave and True",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-03-28T19:40:46.864Z"
+    },
+    {
+      "page_id": 166541,
+      "url": "https://www.youtube.com/watch?v=iUQEbvTg3M0",
+      "title": "mia and sebastian's theme but it's 3am and i improvise - YouTube",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-02-24T23:41:27.749Z"
+    },
+    {
+      "page_id": 184,
+      "url": "https://www.henrikkarlsson.xyz/p/looking-for-alice",
+      "title": "Looking for Alice",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-02-20T03:43:13.286Z"
+    },
+    {
+      "page_id": 22481,
+      "url": "https://vvvincent.me/1-improvements",
+      "title": "1% Improvements - Vincent Cheng",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-02-20T03:03:22.428Z"
+    },
+    {
+      "page_id": 181186,
+      "url": "https://www.hume.ai/explore/speech-prosody-model",
+      "title": "Explore AI Models | Hume AI | Hume AI",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-22T16:23:25.429Z"
+    },
+    {
+      "page_id": 11201,
+      "url": "https://www.evwinners.org",
+      "title": "Emergent Ventures Winners",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-20T18:16:06.154Z"
+    },
+    {
+      "page_id": 180493,
+      "url": "https://astera.org/residency",
+      "title": "Residency - Astera",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-18T21:37:29.207Z"
+    },
+    {
+      "page_id": 13127,
+      "url": "https://boxx.substack.com/p/world-building-irl?s=r",
+      "title": "World-building IRL - by Joss - box.",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-18T00:01:55.057Z"
+    },
+    {
+      "page_id": 180466,
+      "url": "https://docs.google.com/document/d/1IIZccJDoM2rJWuuAbgWehTRNQvIPV3MwDBaqeJZVRRo/edit?tab=t.0",
+      "title": "Senra_Founders_Common_Denominators.md - Google Docs",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-17T21:55:37.854Z"
+    },
+    {
+      "page_id": 180442,
+      "url": "https://www.youtube.com/watch?v=fk0pU0Vg7QA",
+      "title": "The Wagon Wheel Effect | Optical Illusion Science Experiment - YouTube",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-17T19:30:10.362Z"
+    },
+    {
+      "page_id": 180437,
+      "url": "https://www.youtube.com/watch?v=QmgJmh2I3Fw",
+      "title": "Understanding the Discrete Fourier Transform and the FFT - YouTube",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-17T19:03:02.598Z"
+    },
+    {
+      "page_id": 180390,
+      "url": "https://www.lennysnewsletter.com/p/atomic-network",
+      "title": "The Atomic Network - by Lenny Rachitsky",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-17T04:01:45.135Z"
+    }
+  ],
+  "friendship_neighbors": [],
+  "topic_histogram": {
+    "really-good-writing": 9,
+    "people": 6,
+    "good-educational-content": 4,
+    "opportunities": 2,
+    "reading-list": 1,
+    "pretty-good-writing": 1
+  },
+  "embedding_coverage": {
+    "bookmarks_with_embedding": 50,
+    "bookmarks_total": 203
+  },
+  "generated_at": "2026-05-23T20:49:45.913431+00:00",
+  "pipeline_version": "0.1.0"
+}

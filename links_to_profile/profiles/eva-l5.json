@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "user_id": 4501,
+    "curius_id": 6490,
+    "username": "eva-l5",
+    "display_name": "Eva L",
+    "website": "https://evabrl.me",
+    "twitter": null,
+    "self_declared_topics": [
+      "humane internet"
+    ]
+  },
+  "axes": [
+    {
+      "pc_index": 1,
+      "name": "personal_essay_vs_ai_tech_product",
+      "positive_pole": "Introspective first-person Substack-style essays on self-acceptance, romance, ambition, and twentysomething life lessons.",
+      "negative_pole": "Corporate/technical pages about AI infrastructure, LLMs, agent frameworks, and ML research products.",
+      "confidence": "high",
+      "user_mean": -0.01766255684196949,
+      "user_stddev": 0.19515736401081085
+    },
+    {
+      "pc_index": 2,
+      "name": "ai_alignment_discourse_vs_web_design_craft",
+      "positive_pole": "Long-form analytical writing about AI alignment, safety, misalignment risks, and the future of advanced AI systems, typically on rationalist/AI-research blogs.",
+      "negative_pole": "Personal portfolios, web-design inspiration galleries, and creative-coding/indie-web showcases focused on visual craft and aesthetics rather than written argument.",
+      "confidence": "high",
+      "user_mean": -0.030421355739235878,
+      "user_stddev": 0.186981663107872
+    },
+    {
+      "pc_index": 3,
+      "name": "startup_venture_capital_ness",
+      "positive_pole": "Pages about founding startups, venture capital, accelerators, and Silicon Valley career paths for aspiring entrepreneurs.",
+      "negative_pole": "Pages featuring literary poetry or technical machine-learning/interpretability content (neural network internals, transformers, attention).",
+      "confidence": "high",
+      "user_mean": 0.017942549660801888,
+      "user_stddev": 0.1267346292734146
+    },
+    {
+      "pc_index": 4,
+      "name": "cultural_critique_vs_self_improvement",
+      "positive_pole": "Long-form cultural, philosophical, geopolitical, or literary commentary on civilization, ideology, and the human condition (often citing theorists, novels, or historical events).",
+      "negative_pole": "Practical first-person advice posts on personal productivity, learning, research methodology, and how to do great work as an individual.",
+      "confidence": "high",
+      "user_mean": -0.009511136449873447,
+      "user_stddev": 0.1361979842185974
+    },
+    {
+      "pc_index": 5,
+      "name": "quantitative_business_analysis_vs_ai_creativity_reflection",
+      "positive_pole": "Pages presenting quantitative, formula-driven analyses of business, finance, startups, or computer-science algorithms with concrete metrics, math, and how-to mechanics.",
+      "negative_pole": "Personal landing pages and reflective essays by AI/HCI researchers and artists musing on creativity, human-AI interaction, and the philosophy of AI tools.",
+      "confidence": "high",
+      "user_mean": -0.06915368884801865,
+      "user_stddev": 0.1090041995048523
+    },
+    {
+      "pc_index": 6,
+      "name": "intellectual_self_improvement_vs_relational_emotional",
+      "positive_pole": "Long-form essays and book recommendations on how to think, learn, do research, and solve hard problems—aimed at cultivating the reader's intellectual craft.",
+      "negative_pole": "Personal/cultural writing about relationships, dating, loneliness, and AI companions, or product pages about AI tools—focused on emotional life and contemporary tech culture rather than intellectual self-cultivation.",
+      "confidence": "high",
+      "user_mean": -0.011131028644740582,
+      "user_stddev": 0.10150807350873947
+    },
+    {
+      "pc_index": 7,
+      "name": "personal_bio_vs_tech_essay",
+      "positive_pole": "Personal homepage/about-me pages or biographical profiles of individuals (typically young AI/tech researchers and founders) listing their education, jobs, and interests.",
+      "negative_pole": "Topical long-form essays and opinion pieces about software, web design, interfaces, or internet culture, written as arguments rather than self-introductions.",
+      "confidence": "high",
+      "user_mean": 0.0035712493117898703,
+      "user_stddev": 0.11465000361204147
+    },
+    {
+      "pc_index": 8,
+      "name": "relationships_and_social_connection_focus",
+      "positive_pole": "The page is an essay or guide centered on interpersonal connection—how to meet, befriend, converse with, or build community/trust with other people.",
+      "negative_pole": "The page is a personal essay about work, productivity, time, or life trajectory, with the individual's relationship to their own work/time as the central topic rather than relationships with others.",
+      "confidence": "high",
+      "user_mean": 0.008860020898282528,
+      "user_stddev": 0.1151512935757637
+    },
+    {
+      "pc_index": 9,
+      "name": "commentary_vs_frontier_tech",
+      "positive_pole": "Personal blog-style commentary, criticism, and meta-discussion about the internet, AI discourse, and online culture (often opinionated essays reacting to other writing).",
+      "negative_pole": "Institutional or company-style announcements describing ambitious frontier science/engineering projects (biotech, energy, hardware, neuroscience, moonshots) and their technical missions.",
+      "confidence": "high",
+      "user_mean": 0.014363200403749943,
+      "user_stddev": 0.10411737859249115
+    },
+    {
+      "pc_index": 10,
+      "name": "design_taste_and_craft_discourse",
+      "positive_pole": "Essays and studio/product pages centered on aesthetic taste, craft, and the artistry of design (visual, product, or brand-making) as the core subject.",
+      "negative_pole": "Utilitarian posts about personal-productivity systems, note-taking, second-brain tools, knowledge management, and lists of tools/tips for organizing information.",
+      "confidence": "high",
+      "user_mean": -0.04228146746754646,
+      "user_stddev": 0.08538946509361267
+    }
+  ],
+  "personality": {
+    "structured": {
+      "openness_to_strangers": "high",
+      "curiosity_breadth": "wide",
+      "social_disposition": "engaged, outreach-oriented, intellectually driven",
+      "key_interests": [
+        "digital hardware design",
+        "AI interpretability",
+        "engineering outreach",
+        "biomedical hardware",
+        "mathematics"
+      ],
+      "communication_style": "clear, technical but accessible"
+    },
+    "blurb": "Eva comes across as approachable and outreach-minded, comfortable presenting to both technical and lay audiences and actively volunteering to encourage others into engineering. She blends deep technical focus with wide-ranging curiosity—from chip design to AI safety to biomedical devices—and likely engages others through collaborative, knowledge-sharing conversations."
+  },
+  "top_pages": [
+    {
+      "page_id": 3282,
+      "url": "https://blog.samaltman.com/productivity",
+      "title": "Productivity - Sam Altman",
+      "highlight_count": 10,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-14T13:47:47.778Z"
+    },
+    {
+      "page_id": 703,
+      "url": "https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit",
+      "title": "How Superhuman Built an Engine to Find Product/Market Fit | First Round Review",
+      "highlight_count": 4,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-09T13:23:20.486Z"
+    },
+    {
+      "page_id": 168130,
+      "url": "https://www.hyperdimensional.co/p/the-moving-and-the-still",
+      "title": "The Moving and the Still - by Dean W. Ball",
+      "highlight_count": 3,
+      "is_favorite": false,
+      "bookmarked_at": "2026-03-04T17:37:23.294Z"
+    },
+    {
+      "page_id": 3784,
+      "url": "https://www.shaanpuri.com/essays/down",
+      "title": "down",
+      "highlight_count": 2,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-09T17:42:21.720Z"
+    },
+    {
+      "page_id": 132,
+      "url": "https://mindslice.substack.com/p/you-can-get-what-you-want-or-you",
+      "title": "YOU CAN GET WHAT YOU WANT OR YOU CAN JUST GET OLD",
+      "highlight_count": 2,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-09T13:11:27.976Z"
+    },
+    {
+      "page_id": 177991,
+      "url": "https://sophieinkhaven.substack.com/p/the-many-lives-of-inkhaven-20?s=r",
+      "title": "The Many Lives of Inkhaven 2.0 - by Sophie Kim",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-01T12:33:36.949Z"
+    },
+    {
+      "page_id": 27782,
+      "url": "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like",
+      "title": "What failure looks like - AI Alignment Forum",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-03-24T02:25:27.951Z"
+    },
+    {
+      "page_id": 162545,
+      "url": "https://www.coindesk.com/markets/2025/11/12/shayne-coplan-says-blockchain-let-him-build-a-global-market-from-his-bedroom",
+      "title": "Shayne Coplan Speaks at Cantor Conference",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-19T16:29:52.158Z"
+    },
+    {
+      "page_id": 159992,
+      "url": "https://jzhao.xyz/thoughts/friendship",
+      "title": "Friendship",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-08T18:56:31.026Z"
+    },
+    {
+      "page_id": 159994,
+      "url": "https://agentictech.substack.com/p/building-community-around-human-agency",
+      "title": "Building community around human agency: a year in review",
+      "highlight_count": 1,
+      "is_favorite": false,
+      "bookmarked_at": "2026-01-08T14:09:26.852Z"
+    },
+    {
+      "page_id": 181299,
+      "url": "https://forum.obsidian.md/t/excalidraw-full-featured-sketching-plugin-in-obsidian/17367",
+      "title": "Excalidraw - Full featured sketching plugin in Obsidian - Share & showcase - Obsidian Forum",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-23T15:41:51.283Z"
+    },
+    {
+      "page_id": 178398,
+      "url": "https://huggingface.co/docs/lerobot/so101",
+      "title": "SO-101 · Hugging Face",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-04T11:02:58.468Z"
+    },
+    {
+      "page_id": 8047,
+      "url": "https://www.tinytpu.com",
+      "title": "Tiny TPU",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-02T14:58:24.863Z"
+    },
+    {
+      "page_id": 178155,
+      "url": "https://courses.maths.ox.ac.uk/mod/folder/view.php?id=55865",
+      "title": "Mathematical Institute: Course Synopses | Mathematical Institute",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-02T14:07:35.037Z"
+    },
+    {
+      "page_id": 178024,
+      "url": "https://substack.com/home/post/p-194262948",
+      "title": "the daughter who would have stayed - by Sophie Kim",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-01T12:50:30.488Z"
+    },
+    {
+      "page_id": 177940,
+      "url": "https://brain.maxxyung.com/lists/signal",
+      "title": "List of High-Signal Learning Materials",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-05-01T00:31:18.938Z"
+    },
+    {
+      "page_id": 64215,
+      "url": "https://less.online",
+      "title": "LessOnline 2025",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-28T13:20:05.932Z"
+    },
+    {
+      "page_id": 63181,
+      "url": "https://canopylabs.ai",
+      "title": "Canopy Labs",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-25T12:24:36.573Z"
+    },
+    {
+      "page_id": 176428,
+      "url": "https://www.astralcodexten.com/p/half-a-month-of-consolation-writing",
+      "title": "Half A Month Of Consolation Writing Advice",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-22T15:01:52.926Z"
+    },
+    {
+      "page_id": 176102,
+      "url": "https://www.recall.it",
+      "title": "Recall - Your AI Knowledge Base",
+      "highlight_count": 0,
+      "is_favorite": false,
+      "bookmarked_at": "2026-04-20T16:16:33.848Z"
+    }
+  ],
+  "friendship_neighbors": [
+    {
+      "user_id": 208,
+      "username": null,
+      "display_name": null
+    },
+    {
+      "user_id": 219,
+      "username": null,
+      "display_name": null
+    },
+    {
+      "user_id": 1186,
+      "username": null,
+      "display_name": null
+    },
+    {
+      "user_id": 1189,
+      "username": null,
+      "display_name": null
+    },
+    {
+      "user_id": 1221,
+      "username": null,
+      "display_name": null
+    },
+    {
+      "user_id": 4502,
+      "username": null,
+      "display_name": null
+    }
+  ],
+  "topic_histogram": {
+    "humane internet": 3,
+    "cool communities": 1
+  },
+  "embedding_coverage": {
+    "bookmarks_with_embedding": 58,
+    "bookmarks_total": 126
+  },
+  "generated_at": "2026-05-23T20:49:45.923560+00:00",
+  "pipeline_version": "0.1.0"
+}
