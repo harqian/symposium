@@ -197,14 +197,15 @@ Streams the JSON once (file is 108 MB, fits in RAM but stream-parse with `ijson`
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] `uv sync` succeeds
-- [ ] `uv run python -m links_to_profile.filter_export` produces `data/cohort.jsonl` and `data/corpus_pages.jsonl`
-- [ ] `wc -l data/cohort.jsonl` == 3
-- [ ] `wc -l data/corpus_pages.jsonl` == 181326
-- [ ] Cohort bookmark counts match: 203 / 126 / 758 (check with `jq '.bookmarks | length' data/cohort.jsonl`)
+- [x] `uv sync` succeeds
+- [x] `uv run python -m links_to_profile.filter_export` produces `data/cohort.jsonl` and `data/corpus_pages.jsonl`
+- [x] `wc -l data/cohort.jsonl` == 3
+- [x] `wc -l data/corpus_pages.jsonl` == 181326
+- [x] Cohort bookmark counts match: 203 / 126 / 758 (check with `jq '.bookmarks | length' data/cohort.jsonl`)
 
 #### Manual Verification:
 - [ ] Spot-check Harrison's record in `data/cohort.jsonl` — `username == "harrison-qian2"`, `website == "moonflowers.xyz"`, friendship list non-empty.
+  - NOTE during impl: Harrison has 0 friendship edges in the export (verified directly). Eva has 6, Danoli2 has 57 (bidirectional union; reciprocal edges deduped). The "friendship list non-empty" check holds for Eva and Danoli2, not Harrison.
 
 ---
 

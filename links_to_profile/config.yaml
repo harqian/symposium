@@ -1,0 +1,34 @@
+# cohort = the users we build profiles for.
+# NOTE: curius_user_ids holds users.id (export primary key), NOT users.curius_id.
+# the field is named curius_user_ids in the plan and preserved here for clarity
+# of intent; the actual lookup is on the export PK because that's what bookmarks
+# and friendships join on.
+cohort:
+  curius_user_ids: [5790, 4501, 1383]
+  personal_sites:
+    5790: "https://moonflowers.xyz"
+    4501: "https://evabrl.me"
+    1383: "https://www.vernatus.com"
+
+# corpus filter: pages used to fit PCA. min_bookmark_count = 1 means "fit on the
+# full 181k corpus"; default 3 fits on ~10k pages so axes aren't dominated by
+# the single-bookmark long tail.
+corpus:
+  min_bookmark_count: 3
+
+embedding:
+  model: "qwen/qwen3-embedding-8b"
+  provider: "openrouter"
+  dim: 4096
+  instruction: "Given a web article, retrieve articles with similar intellectual character and topic"
+  max_tokens: 32000
+
+pca:
+  n_components: 10
+
+naming:
+  model: "anthropic/claude-opus-4-7"
+  exemplars_per_pole: 20
+
+paths:
+  curius_export: "curius_export_20260523_184955.json"

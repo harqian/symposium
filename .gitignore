@@ -44,6 +44,8 @@ next-env.d.ts
 links_to_profile/curius_export_*.json
 links_to_profile/data/pages/
 links_to_profile/data/personal_sites/
+links_to_profile/data/personality/
+links_to_profile/data/*.jsonl
 links_to_profile/embeddings/
 links_to_profile/axes/pca_model.pkl
 links_to_profile/.venv/
