@@ -1,4 +1,11 @@
-"""Phase 3: bulk-fetch all corpus pages via Jina Reader.
+"""Phase 3: hybrid bulk-fetch all corpus pages.
+
+Routes each URL through the per-domain dispatcher:
+  - arxiv → HTML mirror (Trafilatura) → fall back to PDF via PyMuPDF
+  - youtube → youtube-transcript-api
+  - github → REST /readme or raw.githubusercontent.com
+  - JS-heavy hosts (twitter/x/linkedin/etc.) → Jina Reader
+  - everything else → httpx + Trafilatura → Jina fallback on empty
 
 Reads:  data/corpus_pages.jsonl
 Writes:
@@ -6,16 +13,11 @@ Writes:
   data/pages/index.jsonl           (append-only, one line per attempt)
 
 Resume-safe: any page_id already in index.jsonl is skipped.
-Crash-safe: markdown writes are atomic (tmp + rename); index entries are appended
-            only after the file is written.
 
 Run:
     uv run python -m links_to_profile.fetch_pages
     uv run python -m links_to_profile.fetch_pages --max 100      # smoke
-    uv run python -m links_to_profile.fetch_pages --concurrency 8 --target-rpm 200
-
-Anonymous Jina is rate-limited (~20 RPM, ~2 concurrent). With a paid key, raise
---concurrency and --target-rpm.
+    uv run python -m links_to_profile.fetch_pages --no-jina-fallback   # disable Jina entirely
 """
 
 from __future__ import annotations
@@ -28,12 +30,17 @@ import random
 import time
 from collections import Counter
 from pathlib import Path
-from typing import Iterable
 
 import httpx
 from tqdm import tqdm
 
-from .lib.jina import JINA_BASE, load_api_key
+from .lib.extractors import ExtractResult
+from .lib.extractors import arxiv as arxiv_x
+from .lib.extractors import generic as generic_x
+from .lib.extractors import github as github_x
+from .lib.extractors import jina as jina_x
+from .lib.extractors import youtube as youtube_x
+from .lib.router import Route, classify
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CORPUS_PATH = PROJECT_ROOT / "data" / "corpus_pages.jsonl"
@@ -41,14 +48,31 @@ PAGES_DIR = PROJECT_ROOT / "data" / "pages"
 INDEX_PATH = PAGES_DIR / "index.jsonl"
 
 MIN_OK_BYTES = 100
-WRITE_LOCK = asyncio.Lock()
 INDEX_LOCK = asyncio.Lock()
 
+EXTRACTORS = {
+    "generic": generic_x.fetch,
+    "arxiv": arxiv_x.fetch,
+    "youtube": youtube_x.fetch,
+    "github": github_x.fetch,
+    "jina": jina_x.fetch,
+}
 
-def _iter_jsonl(path: Path):
-    """Iterate parsed JSON records from a jsonl file. Uses file iteration (not
-    str.splitlines) because splitlines() splits on Unicode U+2028/U+2029 which
-    are valid inside JSON strings — Curius page titles contain them."""
+# per-extractor concurrency caps. Generic httpx + Trafilatura is fast and not
+# rate-limited; arxiv PDF is gated by ToU; jina anonymous is the slowest.
+DEFAULT_CONCURRENCY = {
+    "generic": 50,
+    "arxiv": 6,
+    "youtube": 8,
+    "github": 6,
+    "jina": 2,
+}
+
+# fall back to jina when an extractor returns one of these statuses
+JINA_FALLBACK_STATUSES = {"empty", "timeout", "http_5xx", "other", "not_supported"}
+
+
+def iter_jsonl(path: Path):
     with path.open() as f:
         for line in f:
             line = line.rstrip("\n")
@@ -58,37 +82,29 @@ def _iter_jsonl(path: Path):
 
 
 def load_corpus() -> list[dict]:
-    return list(_iter_jsonl(CORPUS_PATH))
+    return list(iter_jsonl(CORPUS_PATH))
 
 
 def load_done_ids() -> set[int]:
-    """page_ids already recorded in index.jsonl (any status counts as done)."""
     if not INDEX_PATH.exists():
         return set()
     done: set[int] = set()
-    with INDEX_PATH.open() as f:
-        for line in f:
-            line = line.rstrip("\n")
-            if not line:
-                continue
-            try:
-                r = json.loads(line)
-                done.add(int(r["page_id"]))
-            except (json.JSONDecodeError, KeyError, ValueError):
-                continue
+    for r in iter_jsonl(INDEX_PATH):
+        try:
+            done.add(int(r["page_id"]))
+        except (KeyError, ValueError, TypeError):
+            continue
     return done
 
 
 async def write_index_record(record: dict) -> None:
     line = json.dumps(record, ensure_ascii=False) + "\n"
     async with INDEX_LOCK:
-        # synchronous append within the lock — fast, atomic at the OS layer for small lines
         with INDEX_PATH.open("a") as f:
             f.write(line)
 
 
 def atomic_write_md(page_id: int, body: str) -> int:
-    """Write data/pages/{page_id}.md atomically. Returns bytes written."""
     out = PAGES_DIR / f"{page_id}.md"
     tmp = PAGES_DIR / f".{page_id}.md.tmp"
     data = body.encode("utf-8")
@@ -97,33 +113,26 @@ def atomic_write_md(page_id: int, body: str) -> int:
     return len(data)
 
 
-class RateLimiter:
-    """Simple sliding-window limiter. Allows up to `rpm` requests per 60s window."""
-
-    def __init__(self, rpm: int):
-        self.rpm = max(1, rpm)
-        self.timestamps: list[float] = []
-        self.lock = asyncio.Lock()
-
-    async def acquire(self) -> None:
-        while True:
-            async with self.lock:
-                now = time.monotonic()
-                self.timestamps = [t for t in self.timestamps if now - t < 60.0]
-                if len(self.timestamps) < self.rpm:
-                    self.timestamps.append(now)
-                    return
-                sleep_for = 60.0 - (now - self.timestamps[0]) + random.uniform(0.01, 0.2)
-            await asyncio.sleep(max(0.1, sleep_for))
+async def run_one_extractor(
+    extractor_name: str,
+    route: Route,
+    clients: dict[str, httpx.AsyncClient],
+    semaphores: dict[str, asyncio.Semaphore],
+) -> ExtractResult:
+    sem = semaphores[extractor_name]
+    client = clients[extractor_name]
+    fn = EXTRACTORS[extractor_name]
+    async with sem:
+        return await fn(route, client)
 
 
 async def fetch_one(
     page: dict,
-    client: httpx.AsyncClient,
-    sem: asyncio.Semaphore,
-    limiter: RateLimiter,
+    clients: dict[str, httpx.AsyncClient],
+    semaphores: dict[str, asyncio.Semaphore],
     pbar: tqdm,
     counts: Counter,
+    enable_jina_fallback: bool,
 ) -> None:
     pid = int(page["page_id"])
     url = page.get("url")
@@ -133,177 +142,142 @@ async def fetch_one(
         pbar.update(1)
         return
 
-    async with sem:
-        for attempt in range(4):
-            await limiter.acquire()
-            try:
-                r = await client.get(f"{JINA_BASE}/{url}")
-            except httpx.TimeoutException:
-                if attempt == 3:
-                    await write_index_record(
-                        {"page_id": pid, "url": url, "status": "timeout"}
-                    )
-                    counts["timeout"] += 1
-                    pbar.update(1)
-                    return
-                await asyncio.sleep(2 ** attempt + random.uniform(0, 1))
-                continue
-            except Exception as e:
-                await write_index_record(
-                    {
-                        "page_id": pid,
-                        "url": url,
-                        "status": "other",
-                        "error": f"{type(e).__name__}: {e}",
-                    }
-                )
-                counts["other"] += 1
-                pbar.update(1)
-                return
+    route = classify(url)
+    primary = route.extractor
 
-            if r.status_code == 429:
-                # respect server backoff
-                wait = 5 * (2 ** attempt) + random.uniform(0, 2)
-                await asyncio.sleep(wait)
-                continue
-            if 500 <= r.status_code < 600 and attempt < 3:
-                await asyncio.sleep(2 ** attempt + random.uniform(0, 1))
-                continue
-            if r.status_code >= 400:
-                bucket = "http_4xx" if r.status_code < 500 else "http_5xx"
-                await write_index_record(
-                    {
-                        "page_id": pid,
-                        "url": url,
-                        "status": bucket,
-                        "http_status": r.status_code,
-                    }
-                )
-                counts[bucket] += 1
-                pbar.update(1)
-                return
+    try:
+        result = await run_one_extractor(primary, route, clients, semaphores)
+    except Exception as e:
+        result = ExtractResult(None, "other",
+                               {"error": f"{type(e).__name__}: {e}"})
 
-            body = r.text
-            if len(body) < MIN_OK_BYTES:
-                await write_index_record(
-                    {
-                        "page_id": pid,
-                        "url": url,
-                        "status": "empty",
-                        "bytes": len(body),
-                    }
-                )
-                counts["empty"] += 1
-                pbar.update(1)
-                return
+    used = primary
+    fell_back = False
+    if (result.status in JINA_FALLBACK_STATUSES
+        and primary != "jina"
+        and enable_jina_fallback):
+        fell_back = True
+        jina_route = Route(extractor="jina", url=url)
+        try:
+            result = await run_one_extractor("jina", jina_route, clients, semaphores)
+        except Exception as e:
+            result = ExtractResult(None, "other",
+                                   {"error": f"jina_fallback: {type(e).__name__}: {e}"})
+        used = "jina"
 
-            bytes_written = atomic_write_md(pid, body)
-            await write_index_record(
-                {
-                    "page_id": pid,
-                    "url": url,
-                    "status": "ok",
-                    "bytes": bytes_written,
-                    "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                }
-            )
-            counts["ok"] += 1
-            pbar.update(1)
-            return
+    record = {
+        "page_id": pid,
+        "url": url,
+        "status": result.status,
+        "extractor": used,
+        "primary_extractor": primary,
+        "jina_fallback": fell_back,
+        **(result.extra or {}),
+    }
+    if result.status == "ok" and result.text and len(result.text) >= MIN_OK_BYTES:
+        bytes_written = atomic_write_md(pid, result.text)
+        record["bytes"] = bytes_written
+        record["fetched_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        counts[f"ok:{used}"] += 1
+    else:
+        # downgrade ok-but-too-short to empty
+        if result.status == "ok":
+            record["status"] = "empty"
+        counts[f"{record['status']}:{used}"] += 1
 
-        # exhausted retries on 429
-        await write_index_record({"page_id": pid, "url": url, "status": "rate_limited"})
-        counts["rate_limited"] += 1
-        pbar.update(1)
+    await write_index_record(record)
+    pbar.update(1)
+
+
+def build_clients(timeout_s: float) -> dict[str, httpx.AsyncClient]:
+    timeout = httpx.Timeout(timeout_s, connect=10.0)
+    # generous limits — concurrency is bounded by the semaphores instead
+    limits = httpx.Limits(max_connections=128, max_keepalive_connections=64)
+    return {name: httpx.AsyncClient(timeout=timeout, limits=limits)
+            for name in EXTRACTORS}
 
 
 async def run_fetch(
-    pages: Iterable[dict],
-    concurrency: int,
-    target_rpm: int,
+    pages: list[dict],
+    concurrency: dict[str, int],
     request_timeout: float,
+    enable_jina_fallback: bool,
 ) -> Counter:
-    api_key = load_api_key()
-    headers = {"Accept": "text/markdown"}
-    if api_key:
-        headers["Authorization"] = f"Bearer {api_key}"
-
-    pages = list(pages)
-    sem = asyncio.Semaphore(concurrency)
-    limiter = RateLimiter(target_rpm)
+    clients = build_clients(request_timeout)
+    semaphores = {name: asyncio.Semaphore(n) for name, n in concurrency.items()}
     counts: Counter = Counter()
-
-    timeout = httpx.Timeout(request_timeout, connect=10.0)
-    limits = httpx.Limits(max_connections=concurrency * 2, max_keepalive_connections=concurrency)
-
-    async with httpx.AsyncClient(headers=headers, timeout=timeout, limits=limits) as client:
-        with tqdm(total=len(pages), unit="page", smoothing=0.05) as pbar:
+    try:
+        with tqdm(total=len(pages), unit="page", smoothing=0.05,
+                  mininterval=2.0) as pbar:
             tasks = [
-                asyncio.create_task(fetch_one(p, client, sem, limiter, pbar, counts))
+                asyncio.create_task(
+                    fetch_one(p, clients, semaphores, pbar, counts,
+                              enable_jina_fallback)
+                )
                 for p in pages
             ]
-            # progress log every 1000 completions
+            done_threshold = 0
             log_every = 1000
-            last_logged = 0
             while pbar.n < len(pages):
                 await asyncio.sleep(15)
-                if pbar.n - last_logged >= log_every:
-                    print(
-                        f"\n[progress] done={pbar.n}/{len(pages)} "
-                        f"buckets={dict(counts)} rate~={pbar.format_dict.get('rate')}",
-                        flush=True,
-                    )
-                    last_logged = pbar.n
+                if pbar.n - done_threshold >= log_every:
+                    print(f"\n[progress] done={pbar.n}/{len(pages)} "
+                          f"buckets={dict(counts.most_common(8))}", flush=True)
+                    done_threshold = pbar.n
             for t in tasks:
                 await t
+    finally:
+        for c in clients.values():
+            await c.aclose()
     return counts
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--max", type=int, default=None, help="cap total pages this run (smoke test)")
-    ap.add_argument("--concurrency", type=int, default=2, help="bounded by Jina free tier")
-    ap.add_argument("--target-rpm", type=int, default=20, help="requests per minute ceiling")
-    ap.add_argument("--timeout", type=float, default=90.0)
-    ap.add_argument(
-        "--shuffle",
-        action="store_true",
-        help="randomize fetch order so a partial run produces a diverse sample",
-    )
+    ap.add_argument("--max", type=int, default=None, help="cap total pages this run")
+    ap.add_argument("--sort", choices=("popularity_desc", "shuffle", "sequential"),
+                    default="popularity_desc")
+    ap.add_argument("--timeout", type=float, default=60.0)
+    ap.add_argument("--no-jina-fallback", action="store_true",
+                    help="disable Jina fallback (keep budget entirely local + free)")
+    ap.add_argument("--concurrency", type=str, default="",
+                    help="override per-extractor concurrency, "
+                         "e.g. 'generic=80,arxiv=4,jina=1'")
     args = ap.parse_args()
 
     PAGES_DIR.mkdir(parents=True, exist_ok=True)
     corpus = load_corpus()
     done = load_done_ids()
     pending = [p for p in corpus if int(p["page_id"]) not in done]
-    print(
-        f"corpus={len(corpus)}  already_indexed={len(done)}  pending={len(pending)}",
-        flush=True,
-    )
+    print(f"corpus={len(corpus)}  already_indexed={len(done)}  pending={len(pending)}",
+          flush=True)
 
-    if args.shuffle:
+    if args.sort == "shuffle":
         random.shuffle(pending)
+    elif args.sort == "popularity_desc":
+        pending.sort(key=lambda p: int(p.get("n_bookmarks", 0)), reverse=True)
+    print(f"sort={args.sort}")
     if args.max is not None:
         pending = pending[: args.max]
         print(f"--max={args.max}  fetching {len(pending)} this run")
 
-    api_key_state = "configured" if load_api_key() else "anonymous"
-    print(
-        f"jina={api_key_state}  concurrency={args.concurrency}  "
-        f"target_rpm={args.target_rpm}",
-        flush=True,
-    )
+    concurrency = dict(DEFAULT_CONCURRENCY)
+    if args.concurrency:
+        for kv in args.concurrency.split(","):
+            k, v = kv.split("=")
+            concurrency[k.strip()] = int(v)
+    print(f"concurrency={concurrency}  jina_fallback={not args.no_jina_fallback}")
 
     if not pending:
-        print("nothing to fetch — index already covers the full corpus")
+        print("nothing to fetch")
         return
 
     counts = asyncio.run(
         run_fetch(
             pending,
-            concurrency=args.concurrency,
-            target_rpm=args.target_rpm,
+            concurrency=concurrency,
             request_timeout=args.timeout,
+            enable_jina_fallback=not args.no_jina_fallback,
         )
     )
     print(f"\ndone. buckets={dict(counts)}")

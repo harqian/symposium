@@ -16,6 +16,9 @@ dependencies = [
   "tenacity>=9.0",
   "joblib>=1.4",
   "matplotlib>=3.8",
+  "trafilatura>=1.12",
+  "pymupdf>=1.24",
+  "youtube-transcript-api>=0.6",
 ]
 
 [build-system]
