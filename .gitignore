@@ -41,21 +41,24 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# links_to_profile pipeline — raw data + derived artifacts
+# links_to_profile pipeline
+#
+# Default: share everything with collaborators. Only ignore (a) really large
+# files (over GitHub's 100 MB single-file limit, or hundreds of MB total) and
+# (b) build/runtime artifacts. Output profiles, axis names, PCA model, and
+# the per-user data ride along in the repo.
+
+# raw Curius export (108 MB, re-exportable from Curius)
 links_to_profile/curius_export_*.json
+# fetched markdown bulk (2+ GB) and embedding binaries (800 MB → 2.4 GB)
 links_to_profile/data/pages/
-links_to_profile/data/personal_sites/
-links_to_profile/data/personality/
-links_to_profile/data/*.jsonl
-# but DO share the cross-user attribution sidecars with collaborators
-!links_to_profile/data/users.jsonl
-!links_to_profile/data/page_bookmarkers.jsonl
-links_to_profile/logs/
-links_to_profile/axes/pca_model.npz
-links_to_profile/axes/page_coords.parquet
 links_to_profile/embeddings/
-links_to_profile/axes/pca_model.pkl
+# big derived intermediate, trivially regenerable from filter_export
+links_to_profile/data/corpus_pages.jsonl
+# venv + caches + logs
 links_to_profile/.venv/
 links_to_profile/__pycache__/
 links_to_profile/**/__pycache__/
-links_to_profile/uv.lock
+links_to_profile/logs/
+# legacy joblib path (we use pca_model.npz now)
+links_to_profile/axes/pca_model.pkl

@@ -1,7 +1,7 @@
 {
   "n_components": 10,
   "n_features": 4096,
-  "n_samples": 6759,
-  "min_bookmark_count": 3,
+  "n_samples": 21414,
+  "min_bookmark_count": 1,
   "fitter": "PCA"
 }

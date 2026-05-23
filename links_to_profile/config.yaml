@@ -11,10 +11,11 @@ cohort:
     1383: "https://www.vernatus.com"
 
 # corpus filter: pages used to fit PCA. min_bookmark_count = 1 means "fit on the
-# full 181k corpus"; default 3 fits on ~10k pages so axes aren't dominated by
-# the single-bookmark long tail.
+# full corpus"; 3 fits on the ~10k popular subset.
+# CURRENTLY 1 — experimental run to see what the long tail does to the axes.
+# Filter=3 snapshot frozen at snapshots/2026-05-23-1349/.
 corpus:
-  min_bookmark_count: 3
+  min_bookmark_count: 1
 
 embedding:
   model: "qwen/qwen3-embedding-8b"
