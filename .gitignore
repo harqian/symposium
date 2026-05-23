@@ -47,6 +47,9 @@ links_to_profile/data/pages/
 links_to_profile/data/personal_sites/
 links_to_profile/data/personality/
 links_to_profile/data/*.jsonl
+# but DO share the cross-user attribution sidecars with collaborators
+!links_to_profile/data/users.jsonl
+!links_to_profile/data/page_bookmarkers.jsonl
 links_to_profile/logs/
 links_to_profile/axes/pca_model.npz
 links_to_profile/axes/page_coords.parquet
