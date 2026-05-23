@@ -42,6 +42,10 @@ def format_input(text: str, instruction: str = DEFAULT_INSTRUCTION) -> str:
     return f"Instruct: {instruction}\nQuery: {text}"
 
 
+class OpenRouterEmbedError(RuntimeError):
+    """Raised when OpenRouter returns a malformed/empty response."""
+
+
 def embed_batch(
     client: OpenAI,
     texts: list[str],
@@ -55,4 +59,12 @@ def embed_batch(
         input=prefixed,
         encoding_format="float",
     )
+    # OpenRouter sometimes returns a 200 with data=None when the upstream
+    # provider erred or rate-limited. Surface the raw response so the caller
+    # can decide whether to back off, shrink batch, or skip.
+    if resp.data is None:
+        raw = getattr(resp, "model_dump_json", lambda: str(resp))()
+        raise OpenRouterEmbedError(
+            f"resp.data=None for batch of {len(texts)}; raw={raw[:600]}"
+        )
     return [d.embedding for d in resp.data]
